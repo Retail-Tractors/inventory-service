@@ -1,11 +1,12 @@
 {
   "name": "retail-tractor-inventory-service",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "dev": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",
@@ -14,12 +15,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/diana-goncalves/Retail-Tractor-inventory-service/issues"
   },
   "homepage": "https://github.com/diana-goncalves/Retail-Tractor-inventory-service#readme",
   "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "pino": "^10.1.0",
