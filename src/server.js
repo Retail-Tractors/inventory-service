@@ -13,7 +13,12 @@ async function startServer() {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    csrfPrevention: false, // desativa o CSRF
     formatError: (err) => {
+      if (err.message.includes("must contain a non-empty")) {
+        return err;
+      }
+
       logger.error(`GraphQL Error: ${err.message}`);
       return err;
     },

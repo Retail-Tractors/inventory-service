@@ -1,8 +1,4 @@
-import { gql } from "graphql-tag";
-
-export const typeDefs = gql`
-  scalar DateTime
-
+export const typeDefs = `
   type Category {
     id: ID!
     name: String!
@@ -25,7 +21,6 @@ export const typeDefs = gql`
   type Query {
     categories: [Category!]
     category(id: ID!): Category
-
     items: [Item!]
     item(id: ID!): Item
   }
