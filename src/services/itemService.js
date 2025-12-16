@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "../config/db.js";
 import logger from "../utils/logger.js";
-
-const prisma = new PrismaClient();
 
 export const getAllItems = async () => {
   logger.info("Fetching all items");
