@@ -22,13 +22,14 @@ model Category {
 
 model Item {
   id           Int      @id @default(autoincrement())
-  name         String
+  userId       Int     @default(12)
+  name         String 
   description  String?
   brand        String?
   model        String?
   year         Int?
   pricePerDay  Float?
-  availability String   @default("available")
+  availability String   @default("Available")
   categoryId   Int
   category     Category @relation(fields: [categoryId], references: [id])
 }

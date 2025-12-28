@@ -21,6 +21,7 @@ export const resolvers = {
     }
   },
 
+  // Add role based access control as needed and improve auth checks
   Mutation: {
     createCategory: async (_, { data }, context) => {
       context.logger.info("Mutation: createCategory");
@@ -39,7 +40,14 @@ export const resolvers = {
 
     createItem: async (_, { data }, context) => {
       context.logger.info("Mutation: createItem");
-      return context.services.item.createItem(data);
+      if (!context.auth?.userId) {
+        throw new GraphQLError("Unauthorized", {
+          extensions: { code: "UNAUTHENTICATED", http: { status: 401 } },
+        });
+      }
+
+      const dataWithUser = { ...data, userId: context.auth.userId };
+      return context.services.item.createItem(dataWithUser);
     },
 
     updateItem: async (_, { id, data }, context) => {

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Item" ADD COLUMN     "userId" INTEGER DEFAULT 12;
