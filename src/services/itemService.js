@@ -1,89 +1,47 @@
-import prisma from "../config/db.js";
-import logger from "../utils/logger.js";
+import prisma from "../db.js";
 
-export const getAllItems = async () => {
-  logger.info("Fetching all items");
-
-  try {
-    const items = await prisma.item.findMany();
-    return items;
-  } catch (err) {
-    logger.error(`Failed to fetch items: ${err.message}`);
-    throw new Error("Could not fetch items");
-  }
+const getAllItems = async () => {
+  return prisma.item.findMany();
 };
 
-export const getItemById = async (id) => {
-  logger.info(`Fetching item with id ${id}`);
-
-  try {
-    const item = await prisma.item.findUnique({
-      where: { id: Number(id) }
-    });
-
-    if (!item) {
-      logger.warn(`Item with id ${id} not found`);
-      throw new Error("Item not found");
-    }
-
-    return item;
-  } catch (err) {
-    logger.error(`Failed to fetch item ${id}: ${err.message}`);
-    throw err;
-  }
+const getItemById = async (id) => {
+  return prisma.item.findUnique({
+    where: { id },
+  });
 };
 
-export const createItem = async (data) => {
-  logger.info("Creating item");
-
-  try {
-    const created = await prisma.item.create({ data });
-    logger.info(`Item created with id ${created.id}`);
-    return created;
-  } catch (err) {
-    logger.error(`Failed to create item: ${err.message}`);
-    throw new Error("Could not create item");
-  }
+const getItemsByCategoryId = async (categoryId) => {
+  return prisma.item.findMany({
+    where: {
+      categoryId,
+    },
+  });
 };
 
-export const updateItem = async (id, data) => {
-  logger.info(`Updating item with id ${id}`);
-
-  try {
-    const updated = await prisma.item.update({
-      where: { id: Number(id) },
-      data
-    });
-
-    return updated;
-  } catch (err) {
-    if (err.code === "P2025") {
-      logger.warn(`Attempted to update non-existent item ${id}`);
-      throw new Error("Item not found");
-    }
-
-    logger.error(`Failed to update item ${id}: ${err.message}`);
-    throw new Error("Could not update item");
-  }
+const createItem = async (data) => {
+  return prisma.item.create({
+    data,
+  });
 };
 
-export const deleteItem = async (id) => {
-  logger.info(`Deleting item with id ${id}`);
+const updateItem = async (id, data) => {
+  return prisma.item.update({
+    where: { id },
+    data,
+  });
+};
 
-  try {
-    await prisma.item.delete({
-      where: { id: Number(id) }
-    });
+const deleteItem = async (id) => {
+  return prisma.item.delete({
+    where: { id },
+  });
+};
 
-    logger.info(`Item ${id} deleted`);
-    return true;
-  } catch (err) {
-    if (err.code === "P2025") {
-      logger.warn(`Attempted to delete non-existent item ${id}`);
-      throw new Error("Item not found");
-    }
-
-    logger.error(`Failed to delete item ${id}: ${err.message}`);
-    throw new Error("Could not delete item");
-  }
+export default {
+  getAllItems,
+  getItemById,
+  getItemsByCategoryId,
+  createItem,
+  updateItem,
+  deleteItem,
 };

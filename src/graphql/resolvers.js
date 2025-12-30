@@ -1,3 +1,5 @@
+import { GraphQLError } from "graphql";
+
 export const resolvers = {
   Query: {
     categories: async (_, __, context) => {
@@ -18,10 +20,9 @@ export const resolvers = {
     item: async (_, { id }, context) => {
       context.logger.info(`Query: item id=${id}`);
       return context.services.item.getItemById(id);
-    }
+    },
   },
 
-  // Add role based access control as needed and improve auth checks
   Mutation: {
     createCategory: async (_, { data }, context) => {
       context.logger.info("Mutation: createCategory");
@@ -40,9 +41,13 @@ export const resolvers = {
 
     createItem: async (_, { data }, context) => {
       context.logger.info("Mutation: createItem");
+
       if (!context.auth?.userId) {
         throw new GraphQLError("Unauthorized", {
-          extensions: { code: "UNAUTHENTICATED", http: { status: 401 } },
+          extensions: {
+            code: "UNAUTHENTICATED",
+            http: { status: 401 },
+          },
         });
       }
 
@@ -58,22 +63,26 @@ export const resolvers = {
     deleteItem: async (_, { id }, context) => {
       context.logger.info(`Mutation: deleteItem id=${id}`);
       return context.services.item.deleteItem(id);
-    }
+    },
   },
 
   Category: {
-    items: (parent, _, context) => {
-      context.logger.info(`Resolving Category.items for id=${parent.id}`);
-      return context.services.item
-        .getAllItems()
-        .then(items => items.filter(i => i.categoryId === parent.id));
-    }
+    items: async (parent, _, context) => {
+      context.logger.info(
+        `Resolving Category.items for categoryId=${parent.id}`
+      );
+
+      return context.services.item.getItemsByCategoryId(parent.id);
+    },
   },
 
   Item: {
-    category: (parent, _, context) => {
-      context.logger.info(`Resolving Item.category for id=${parent.id}`);
+    category: async (parent, _, context) => {
+      context.logger.info(
+        `Resolving Item.category for categoryId=${parent.categoryId}`
+      );
+
       return context.services.category.getCategoryById(parent.categoryId);
-    }
-  }
+    },
+  },
 };
