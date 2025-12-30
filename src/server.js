@@ -31,7 +31,7 @@ async function getAuthFromReq(req) {
     return {
       jwt: payload,
       kid: protectedHeader.kid,
-      userId: payload.id,
+      userId: parseInt(payload.sub),
       email: payload.email,
       name: payload.name,
     };
