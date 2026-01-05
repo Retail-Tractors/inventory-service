@@ -6,7 +6,7 @@ import { GraphQLError } from "graphql";
 import { resolvers } from "./graphql/resolvers.js";
 import logger from "./utils/logger.js";
 import * as categoryService from "./services/categoryService.js";
-import * as itemService from "./services/itemService.js";
+import itemService from "./services/itemService.js";
 import { jwtVerify, createRemoteJWKSet } from "jose";
 
 const typeDefs = readFileSync("./src/graphql/schema.graphql", "utf8");
