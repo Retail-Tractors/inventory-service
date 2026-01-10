@@ -19,7 +19,7 @@ export const resolvers = {
 
     item: async (_, { id }, context) => {
       context.logger.info(`Query: item id=${id}`);
-      return context.services.item.getItemById(id);
+      return context.services.item.getItemById(parseInt(id));
     },
   },
 
