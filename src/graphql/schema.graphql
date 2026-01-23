@@ -5,6 +5,14 @@ type Category {
   items: [Item!]
 }
 
+type Review {
+  id: ID!
+  userName: String!
+  rating: Int!
+  comment: String
+  createdAt: String!
+}
+
 type Item {
   id: ID!
   userId: Int
@@ -16,6 +24,10 @@ type Item {
   pricePerDay: Float
   availability: String
   category: Category!
+
+  reviews(limit: Int = 5, offset: Int = 0): [Review!]
+  averageRating: Float
+  totalReviews: Int
 }
 
 type Query {
@@ -50,4 +62,3 @@ type Mutation {
   updateItem(id: ID!, data: ItemInput!): Item!
   deleteItem(id: ID!): Boolean!
 }
-

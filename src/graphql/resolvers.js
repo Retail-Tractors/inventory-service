@@ -77,6 +77,35 @@ export const resolvers = {
   },
 
   Item: {
+    reviews: async (parent, args, context) => {
+      const page = Math.floor(args.offset / args.limit) + 1;
+
+      const data = await context.services.item.getItemById(parent.id, {
+        page,
+        pageSize: args.limit,
+      });
+
+      return data.reviews;
+    },
+
+    averageRating: async (parent, _, context) => {
+      const data = await context.services.item.getItemById(parent.id, {
+        page: 1,
+        pageSize: 1,
+      });
+
+      return data.averageRating;
+    },
+
+    totalReviews: async (parent, _, context) => {
+      const data = await context.services.item.getItemById(parent.id, {
+        page: 1,
+        pageSize: 1,
+      });
+
+      return data.totalReviews;
+    },
+
     category: async (parent, _, context) => {
       context.logger.info(
         `Resolving Item.category for categoryId=${parent.categoryId}`
