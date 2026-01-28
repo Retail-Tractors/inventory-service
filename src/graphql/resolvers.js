@@ -57,12 +57,12 @@ export const resolvers = {
 
     updateItem: async (_, { id, data }, context) => {
       context.logger.info(`Mutation: updateItem id=${id}`);
-      return context.services.item.updateItem(id, data);
+      return context.services.item.updateItem(parseInt(id), data);
     },
 
     deleteItem: async (_, { id }, context) => {
       context.logger.info(`Mutation: deleteItem id=${id}`);
-      return context.services.item.deleteItem(id);
+      return context.services.item.deleteItem(parseInt(id));
     },
   },
 
